@@ -1,2 +1,2 @@
-# stock-alarm
-Alarm Stock Information
+# Stock Alarm
+Stock Alarm

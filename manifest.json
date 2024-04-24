@@ -1,0 +1,15 @@
+{
+	"short_name": "Stock Alarm",
+	"name": "Stock Alarm",
+  "icons": [
+    {
+      "src": "icon/icon-144x144.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    }
+  ],	
+	"start_url": "http://localhost:8087/program/GIT00070/",
+	"background_color": "#000",
+	"theme_color": "#536878",
+	"display": "standalone"	
+}

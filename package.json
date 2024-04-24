@@ -1,0 +1,7 @@
+{
+	"main": "nw_main.js",
+	"name": "Stock Alarm",
+	"version": "0.0.1",
+	"description": "Stock Alarm", 
+	"author": "ace"
+}

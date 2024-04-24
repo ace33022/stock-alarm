@@ -1,0 +1,126 @@
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> -->
+
+<!DOCTYPE html>
+
+<html lang="zh-Hant-TW">
+
+	<!--
+		--
+    -- @description Stock Alarm
+    --
+		-- @version 2024/04/14 ace 初始版本。
+		--
+		-- @author ace
+		--
+		-->
+  <head>
+
+    <title>Stock Alarm</title>
+		
+    <meta http-equiv="Content-Language" content="zh-tw">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui" />
+
+    <meta name="theme-color" content="#FFFFFF" />
+
+		<meta name="robots" content="index,follow" />
+
+		<meta name="keywords" content="Stock Alarm" />
+    <meta name="description" content="Stock Alarm" />
+
+    <meta name="author" content="ace33022" />
+		
+		<meta name="is-independent-favicon" content="N">
+		<meta name="load-manifest" content="Y">
+		<meta name="register-service_worker" content="Y">
+		
+		<meta name="ui-style" content="bootstrap" />
+		<meta name="load-nw_inject_end" content="Y">
+		
+		<meta name="force-login" content="N" />
+		
+		<!-- <base href="/" /> -->
+		<!-- <base href="W:/tool/package/LangEnv/java/apache-tomcat/webapps/ROOT/" /> -->
+		<!-- <base href="W:/tool/package/LangEnv/java/apache-tomcat/webapps/ROOT/htdoc/" /> -->
+		<base href="/" />
+
+		<!-- <link type="image/png" rel="icon" href="icon/favicon.ico" /> -->
+		<link type="image/png" rel="icon" href="icon/favicon.png" />
+		
+		<!-- <link rel="manifest" href="program/GIT00070/manifest.json" /> -->
+		
+		<style type="text/css"></style>
+		
+		<script type="text/javascript" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+		<script type="text/javascript" src="https://www.gstatic.com/firebasejs/10.10.0/firebase-database-compat.js"></script>
+		
+		<script type="text/javascript">
+		
+			var base;
+			
+			/**
+			 *
+			 * @see {@link https://stackoverflow.com/questions/3494954/how-do-i-set-a-pages-base-href-in-javascript|How do I set a page's base href in Javascript? - Stack Overflow}
+			 *
+			 * @comment 2020/12/06 ace Firebox還未支援base標簽？
+			 * @comment 2020/12/06 ace Chrome設定base標籤後會重新載入script檔案！？藉由這個特性達到程式化載入指定檔案！！
+			 * @comment 2021/06/24 ace 重設base標籤，只會重新載入script檔案，但不會重新載入css檔案？！
+			 *
+			 */
+			if (document.getElementsByTagName('head')[0].getElementsByTagName('base').length == 0) {
+			
+				base = document.createElement('base');
+				
+				document.head.appendChild(base);
+			}
+			else {
+			
+				base = document.getElementsByTagName('head')[0].getElementsByTagName('base')[0];
+			}
+			
+			if (location.protocol == 'file:') {
+
+				// base.setAttribute('href', 'W:/tool/package/LangEnv/java/apache-tomcat/webapps/ROOT/WEB-INF/htdoc/');
+				base.setAttribute('href', 'W:/htdoc/');
+			}
+			else if (location.origin.startsWith('http')) {
+			
+				if ((location.origin.indexOf('127.0.0.1') === -1) && (location.origin.indexOf('localhost') === -1)) {
+			
+					base.setAttribute('href', 'https://ace33022.github.io/htdoc/');
+				}
+				else {
+				
+					base.setAttribute('href', location["origin"] + '/');
+				}
+			}
+			else if (location.protocol == 'chrome-extension:') {
+			
+			}
+		</script>
+		
+		<!-- <script type="text/javascript" src="javascript/tw/ace33022/NameSpace.js"></script> -->
+
+		<script type="text/javascript" src="javascript/tw/ace33022/DefaultConfiguration.js"></script>
+		<script type="text/javascript" src="javascript/tw/ace33022/Configuration.js"></script>
+		
+		<!-- <script type="text/javascript" src="javascript/tw/ace33022/RequireJSConfig.js"></script> -->
+  </head>
+
+	<!-- <body class="container-fluid"></body> -->
+	<body>
+		<script type="text/javascript">
+
+			/*
+			if ('serviceWorker' in navigator) {
+			
+				console.log('register worker');
+				
+				navigator.serviceWorker.register('program/GIT00070/service-worker.js').then(function(reg) {console.log('register complete.');}).catch(function(error) {console.log('register is error.');})
+			} 
+			*/
+		</script>
+	</body>
+</html>
