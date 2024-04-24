@@ -1,4 +1,4 @@
-
+ï»¿
 - http://localhost:8087/program/GIT00070/
-	- ¿ï¾Ü¦w¸Ë«á·|Ãö³¬­ì¥»µøµ¡¡I
+	- é¸æ“‡å®‰è£å¾Œæœƒé—œé–‰ç¾æœ‰è¦–çª—ï¼
 - T:\package\browser\chrome\112.0.5615.50\GoogleChromePortable64\App\Chrome-bin\chrome_proxy.exe  --user-data-dir="T:\package\browser\chrome\112.0.5615.50\GoogleChromePortable64\Data\profile" --profile-directory=Default --app-id=jdbekpajdkmphblakfbdhlgipkdmmakm
