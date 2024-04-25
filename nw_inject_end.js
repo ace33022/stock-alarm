@@ -60,7 +60,7 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 		
 		if (Notification.permission == "granted") {
 		
-			// createNotification('Wow! This is great', 'created by @study.tonight', 'https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png');
+			createNotification('Wow! This is great', 'created by @study.tonight', 'https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png');
 		}
 		else {
 		
@@ -68,7 +68,7 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 			
 				if (permission == 'granted') {
 				
-					// createNotification('Wow! This is great', 'created by @study.tonight', 'https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png');
+					createNotification('Wow! This is great', 'created by @study.tonight', 'https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png');
 				}
 			});
 		}
@@ -87,11 +87,12 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 		};
 		*/
 		
+		/* databaseURL: "https://stock-alarm.firebaseio.com", */
+		/*
 		firebase.initializeApp({
 		
 			apiKey: "AIzaSyDNEP4yz90DYPc7r4pqO6d-ANir499inro",
 			authDomain: "stock-alarm-dc6af.firebaseapp.com",
-			/* databaseURL: "https://stock-alarm.firebaseio.com", */
 			databaseURL: "https://stock-alarm-dc6af-default-rtdb.asia-southeast1.firebasedatabase.app/",
 			projectId: "stock-alarm-dc6af",
 			storageBucket: "stock-alarm-dc6af.appspot.com",
@@ -99,7 +100,9 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 			appId: "1:35503173635:web:c0f82ee0d9c11485f21e36",
 			measurementId: "G-17ZP4QJE62"
 		});
-		
+		*/
+
+		/*
 		firebase.database().ref('/point').once('value', function(snapshot) {
 		
 			console.log('Once Value');
@@ -108,7 +111,9 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 			console.log(snapshot.val());
 			// the console.log will return NULL, database is empty
 		});
+		*/
 		
+		/*
 		firebase.database().ref('/alert/20240423').on('child_added', function(snapshot, prevChildKey) {
 		
 			var tag = '';
@@ -124,7 +129,6 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 			
 			// createNotification('TX', snapshot.val(), 'https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png');
 			
-			/*
 			var audio = new Audio('http://commondatastorage.googleapis.com/codeskulptor-assets/jump.ogg');
 			
 			var notification = null;
@@ -161,8 +165,7 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 				
 				// audio.pause();
 			});
-			*/
-			
 		});
+		*/
 	});
 });
