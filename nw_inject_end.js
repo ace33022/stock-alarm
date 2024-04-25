@@ -46,7 +46,7 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 				+ '    </div>'
 				+ '  </div>'
 				+ '</div>';
-		jQuery('body').append(tag);
+		// jQuery('body').append(tag);
 		
 		jQuery('#' + txtContentId).on('focus', function(event) {jQuery(this).select();});
 		
@@ -111,13 +111,18 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 		
 		firebase.database().ref('/alert/20240423').on('child_added', function(snapshot, prevChildKey) {
 		
+			var tag = '';
+		
 			// child_added會先將原有資料讀入乙次！如何不讀入舊有資料？
 			// 增加判斷時間的條件？
 			console.log('child added');
 			// console.log(snapshot.key);
 			console.log(snapshot.val());
 			
-			createNotification('TX', snapshot.val(), 'https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png');
+			tag = '<div>' + snapshot.val() + '</div>';
+			jQuery('body').append(tag);
+			
+			// createNotification('TX', snapshot.val(), 'https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png');
 			
 			/*
 			var audio = new Audio('http://commondatastorage.googleapis.com/codeskulptor-assets/jump.ogg');
