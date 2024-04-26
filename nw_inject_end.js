@@ -28,6 +28,7 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 
 		var txtContentId = 'txtContent' + Math.random().toString(36).substr(2, 6);
 		var btnQueryId = 'btnQuery' + Math.random().toString(36).substr(2, 6);
+		var btnTestNotificationId = 'btnTestNotification' + Math.random().toString(36).substr(2, 6);
 
 		var tag;
 
@@ -47,8 +48,17 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 				+ '  </div>'
 				+ '</div>';
 		// jQuery('body').append(tag);
+		tag = '<div style="display: flex; flex-direction: row; justify-content: flex-end; width: 100%;">'
+				+ '  <button id="' + btnTestNotificationId + '" style="font-size: 20px; font-weight: 700; width: 40%;">Notification</button>'
+				+ '</div>';
+		jQuery('body').append(tag);
 		
 		jQuery('#' + txtContentId).on('focus', function(event) {jQuery(this).select();});
+		
+		jQuery('#' + btnTestNotificationId).on('click', function(event) {
+		
+			createNotification('Wow! This is from TestNotification', 'created by @study.tonight', 'https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png');
+		});
 		
 		function createNotification(title, text, icon) {
 		
