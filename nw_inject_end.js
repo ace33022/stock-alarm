@@ -57,9 +57,26 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 		
 		jQuery('#' + btnTestNotificationId).on('click', function(event) {
 		
-			createNotification('Wow! This is from TestNotification', 'created by @study.tonight', 'https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png');
+			// createNotification('Wow! This is from TestNotification', 'created by @study.tonight', 'https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png');
+			
+			console.log(location.origin);
+			console.log(location.pathname);
+			
+			navigator.serviceWorker.getRegistration(location.origin + location.pathname + 'service_worker').then(function(registration) {
+			
+				var options = {
+					"icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png",
+					body: '歡迎加入 Angular 社群',
+					image: 'https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png'
+				};
+				
+				// console.log(registration);
+				
+				registration.showNotification('Angular User Group Taiwan', options);
+			});
 		});
 		
+		/*
 		function createNotification(title, text, icon) {
 		
 			const noti = new Notification(title, {
@@ -82,6 +99,7 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 				}
 			});
 		}
+		*/
 
 		/*
 		const firebaseConfig = {
