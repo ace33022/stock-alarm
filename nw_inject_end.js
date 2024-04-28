@@ -59,8 +59,8 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 		
 			// createNotification('Wow! This is from TestNotification', 'created by @study.tonight', 'https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png');
 			
-			console.log(location.origin);
-			console.log(location.pathname);
+			// console.log(location.origin);
+			// console.log(location.pathname);
 			
 			navigator.serviceWorker.getRegistration(location.origin + location.pathname + 'service_worker').then(function(registration) {
 			
