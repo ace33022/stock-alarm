@@ -32,6 +32,10 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 
 		var tag;
 
+		var audio = new Audio('http://commondatastorage.googleapis.com/codeskulptor-assets/jump.ogg');
+		
+		var notification = null;
+		
 		jQuery(window).on('focus', function(event) {
 
 			// if ((jQuery('.modal-open').length === 0) && (jQuery('.modal-backdrop').length === 0)) {jQuery('#' + txtContentId).focus();}
@@ -48,6 +52,7 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 				+ '  </div>'
 				+ '</div>';
 		// jQuery('body').append(tag);
+		
 		tag = '<div style="display: flex; flex-direction: row; justify-content: flex-end; width: 100%;">'
 				+ '  <button id="' + btnTestNotificationId + '" style="font-size: 20px; font-weight: 700; width: 40%;">Notification</button>'
 				+ '</div>';
@@ -64,43 +69,15 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 			
 			navigator.serviceWorker.getRegistration(location.origin + location.pathname + 'service_worker').then(function(registration) {
 			
-				var options = {
+				registration.showNotification('Angular User Group Taiwan', {
+				
 					"icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png",
-					body: '歡迎加入 Angular 社群',
-					image: 'https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png'
-				};
-				
-				// console.log(registration);
-				
-				registration.showNotification('Angular User Group Taiwan', options);
+					"body": "歡迎加入 Angular 社群",
+					"image": "https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png"
+				});
 			});
 		});
 		
-		/*
-		function createNotification(title, text, icon) {
-		
-			const noti = new Notification(title, {
-						body: text,
-						icon
-			});
-		}
-		
-		if (Notification.permission == "granted") {
-		
-			createNotification('Wow! This is great', 'created by @study.tonight', 'https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png');
-		}
-		else {
-		
-			Notification.requestPermission(permission => {
-			
-				if (permission == 'granted') {
-				
-					createNotification('Wow! This is great', 'created by @study.tonight', 'https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png');
-				}
-			});
-		}
-		*/
-
 		/*
 		const firebaseConfig = {
 		
@@ -115,12 +92,11 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 		};
 		*/
 		
-		/* databaseURL: "https://stock-alarm.firebaseio.com", */
-		/*
 		firebase.initializeApp({
-		
+
 			apiKey: "AIzaSyDNEP4yz90DYPc7r4pqO6d-ANir499inro",
 			authDomain: "stock-alarm-dc6af.firebaseapp.com",
+			/* databaseURL: "https://stock-alarm.firebaseio.com", */
 			databaseURL: "https://stock-alarm-dc6af-default-rtdb.asia-southeast1.firebasedatabase.app/",
 			projectId: "stock-alarm-dc6af",
 			storageBucket: "stock-alarm-dc6af.appspot.com",
@@ -128,8 +104,145 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 			appId: "1:35503173635:web:c0f82ee0d9c11485f21e36",
 			measurementId: "G-17ZP4QJE62"
 		});
-		*/
+		
+		audio.loop = true;
+		
+		if ('Notification' in window) {
+		
+			console.log('Notification permission: ', Notification.permission);
+		
+			if (Notification.permission == 'granted') {
+			
+				notification = new Notification('Stock Alarm', {
+	
+					"body": "確認Notification是否顯示！",
+					"icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png"
+					/* "image": "https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png" */
+				});			
+			}
+			else {
+			
+				if (Notification.permission != 'denied') {
+				
+					Notification.requestPermission(function(permission) {
+					
+						console.log('Notification permission: ', permission);
+						
+						if (permission == 'granted') {
+						
+							notification = new Notification('Stock Alarm', {
+				
+								"body": "確認Notification是否顯示！",
+								"icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png"
+								/* "image": "https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png" */
+							});			
+						}
+					});
+				}
+			}
+			
+			if (notification != null) {
+			
+				notification.addEventListener("show", () => {
+				
+					console.log('notification show');
+					
+					// audio.play();
+				});
+				
+				notification.addEventListener("click", () => {
+				
+					console.log('notification click');
+					
+					notification.close();
+					
+					// display about message?
+					
+					// audio.pause();
+				});
 
+				notification.addEventListener("close", () => {
+				
+					console.log('notification close');
+					
+					// audio.pause();
+				});
+			}
+		}
+		else {
+
+			console.log('Notification not in Navigator.');
+		}
+		
+		if ('serviceWorker' in navigator) {
+		
+			// console.log(location.origin + location.pathname + 'service_worker.js');
+			
+			navigator.serviceWorker.register(location.origin + location.pathname + 'service_worker.js')
+			.then(function(registration) {
+			
+				console.log('Register serviceWorker complete.');
+				
+				// console.log('registration: ' + registration);
+				
+				firebase.messaging().getToken({
+				
+					"vapidKey": "BB29FY8R7vgk3HA5yRlE-yzQzMowlT7dnEkYEwq9QArjLUXZ2dPzXDtXt2L6DQIVTn3HaLHXMPZh6ztdA7sgtNM",
+					"serviceWorkerRegistration": registration
+				})
+				.then((currentToken) => {
+				
+					if (currentToken) {
+					
+						// Send the token to your server and update the UI if necessary
+						console.log('currentToken: ' + currentToken);
+						
+						jQuery('body').append('<div>' + currentToken + '</div>');
+						
+						// 使用realtime database紀錄
+						// return currentToken;
+					} 
+					else {
+					
+						// Show permission request UI
+						console.log('No registration token available. Request permission to generate one.');
+					}
+				})
+				.catch((error) => {
+				
+					console.log('An error occurred while retrieving token. ', error);
+				});
+				
+			})
+			.catch(function(error) {
+			
+				console.log('Register serviceWorker occur with error. ', error);
+			});
+		}
+		else {
+		
+			console.log('Navigator don\'t have serviceWorker.');
+		}
+		
+		firebase.messaging().onMessage(payload => {
+		
+			// @memo 2024/05/03 ace 接收到的訊息即使有notification屬性，也不會預設以Notification顯示，可自行處理收到的訊息。
+		
+			console.log('onMessage received.', payload);
+			
+			/* "icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png", */
+			/* "image": "https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png", */
+			/*
+			navigator.serviceWorker.getRegistration(location.origin + location.pathname + 'service_worker').then(function(registration) {
+			
+				registration.showNotification(payload["notification"]["title"], {
+				
+					"body": payload["notification"]["body"]
+				});
+			});
+			*/
+		});
+		
 		/*
 		firebase.database().ref('/point').once('value', function(snapshot) {
 		
