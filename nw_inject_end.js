@@ -206,17 +206,25 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 					
 						// Show permission request UI
 						console.log('No registration token available. Request permission to generate one.');
+						
+						jQuery('body').append('<div>No registration token available. Request permission to generate one.</div>');
 					}
 				})
 				.catch((error) => {
 				
 					console.log('An error occurred while retrieving token. ', error);
+					
+					jQuery('body').append('<div>An error occurred while retrieving token.</div>');
+					jQuery('body').append('<div>' + error + '</div>');
 				});
 				
 			})
 			.catch(function(error) {
 			
 				console.log('Register serviceWorker occur with error. ', error);
+				
+				jQuery('body').append('<div>Register serviceWorker occur with error.</div>');
+				jQuery('body').append('<div>' + error + '</div>');
 			});
 		}
 		else {
