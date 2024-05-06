@@ -32,7 +32,7 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 
 		var tag;
 
-		var audio = new Audio('http://commondatastorage.googleapis.com/codeskulptor-assets/jump.ogg');
+		// var audio = new Audio('http://commondatastorage.googleapis.com/codeskulptor-assets/jump.ogg');
 		
 		var notification = null;
 		
@@ -105,7 +105,7 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 			measurementId: "G-17ZP4QJE62"
 		});
 		
-		audio.loop = true;
+		// audio.loop = true;
 		
 		if ('Notification' in window) {
 		
