@@ -110,6 +110,8 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 		if ('Notification' in window) {
 		
 			console.log('Notification permission: ', Notification.permission);
+			
+			jQuery('body').append('<div>' + 'Notification permission: ' + Notification.permission + '</div>');
 		
 			if (Notification.permission == 'granted') {
 			
@@ -127,6 +129,8 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 					Notification.requestPermission(function(permission) {
 					
 						console.log('Notification permission: ', permission);
+						
+						jQuery('body').append('<div>' + 'Notification permission: ' + Notification.permission + '</div>');
 						
 						if (permission == 'granted') {
 						
@@ -172,6 +176,8 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 		else {
 
 			console.log('Notification not in Navigator.');
+			
+			jQuery('body').append('<div>' + 'Notification not in Navigator.' + '</div>');
 		}
 		
 		if ('serviceWorker' in navigator) {
@@ -182,6 +188,8 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 			.then(function(registration) {
 			
 				console.log('Register serviceWorker complete.');
+				
+				jQuery('body').append('<div>' + 'Register serviceWorker complete.' + '</div>');
 				
 				// console.log('registration: ' + registration);
 				
@@ -237,6 +245,8 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 			// @memo 2024/05/03 ace 接收到的訊息即使有notification屬性，也不會預設以Notification顯示，可自行處理收到的訊息。
 		
 			console.log('onMessage received.', payload);
+			
+			jQuery('body').append('<div>' + 'onMessage received.' + '</div>');
 			
 			/* "icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png", */
 			/* "image": "https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png", */
