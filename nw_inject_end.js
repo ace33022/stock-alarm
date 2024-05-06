@@ -184,6 +184,10 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 		
 			// console.log(location.origin + location.pathname + 'service_worker.js');
 			
+			jQuery('body').append('<div>location.origin: ' + location.origin + '</div>');
+			jQuery('body').append('<div>location.pathname: ' + location.pathname + '</div>');
+			jQuery('body').append('<div>: ' + location.origin + location.pathname + 'service_worker.js' + '</div>');
+			
 			navigator.serviceWorker.register(location.origin + location.pathname + 'service_worker.js')
 			.then(function(registration) {
 			
