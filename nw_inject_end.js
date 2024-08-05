@@ -96,6 +96,8 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 		jQuery('body').append('<div>' + 'window.Notification: ' + window.Notification + '</div>');
 		jQuery('body').append('<div>' + 'navigator.serviceWorker: ' + navigator.serviceWorker + '</div>');
 		
+		jQuery('body').append('<div>Check Notification</div>');
+		
 		if ('Notification' in window) {
 		
 			console.log('Notification permission: ', Notification.permission);
@@ -166,8 +168,10 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 
 			console.log('Notification not in Navigator.');
 			
-			jQuery('body').append('<div>' + 'Notification not in Navigator.' + '</div>');
+			jQuery('body').append('<div>' + 'Notification not in window.' + '</div>');
 		}
+		
+		jQuery('body').append('<div>Check serviceWorker</div>');
 		
 		if ('serviceWorker' in navigator) {
 		
@@ -231,6 +235,8 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 		else {
 		
 			console.log('Navigator don\'t have serviceWorker.');
+			
+			jQuery('body').append('<div>Navigator don\'t have serviceWorker.</div>');
 		}
 		
 		firebase.messaging().onMessage(payload => {
