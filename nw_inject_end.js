@@ -106,12 +106,26 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 		
 			if (Notification.permission == 'granted') {
 			
-				notification = new Notification('Stock Alarm', {
-	
-					"body": "確認Notification是否顯示！",
-					"icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png"
-					/* "image": "https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png" */
-				});			
+				jQuery('body').append('<div>Display Notification</div>');
+				
+				try {
+
+					notification = new Notification('Stock Alarm', {
+		
+						"body": "確認Notification是否顯示！",
+						"icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png"
+						/* "image": "https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png" */
+					});			
+				}
+				catch(e) {
+
+					console.log(e.message);
+					
+					jQuery('body').append('<div>' + e.message + '</div>');
+				}
+				finally {
+				
+				}
 			}
 			else {
 			
@@ -137,6 +151,8 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 			}
 			
 			if (notification != null) {
+			
+				jQuery('body').append('<div>add Event to Notification</div>');
 			
 				notification.addEventListener("show", () => {
 				
