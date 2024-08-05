@@ -78,20 +78,6 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 			});
 		});
 		
-		/*
-		const firebaseConfig = {
-		
-			apiKey: "AIzaSyDNEP4yz90DYPc7r4pqO6d-ANir499inro",
-			authDomain: "stock-alarm-dc6af.firebaseapp.com",
-			databaseURL: "https://stock-alarm-dc6af-default-rtdb.asia-southeast1.firebasedatabase.app/",
-			projectId: "stock-alarm-dc6af",
-			storageBucket: "stock-alarm-dc6af.appspot.com",
-			messagingSenderId: "35503173635",
-			appId: "1:35503173635:web:c0f82ee0d9c11485f21e36",
-			measurementId: "G-17ZP4QJE62"
-		};
-		*/
-		
 		firebase.initializeApp({
 
 			apiKey: "AIzaSyDNEP4yz90DYPc7r4pqO6d-ANir499inro",
@@ -106,6 +92,9 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 		});
 		
 		// audio.loop = true;
+		
+		jQuery('body').append('<div>' + 'window.Notification: ' + window.Notification + '</div>');
+		jQuery('body').append('<div>' + 'navigator.serviceWorker: ' + navigator.serviceWorker + '</div>');
 		
 		if ('Notification' in window) {
 		
@@ -209,7 +198,7 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 						// Send the token to your server and update the UI if necessary
 						console.log('currentToken: ' + currentToken);
 						
-						jQuery('body').append('<div>' + currentToken + '</div>');
+						jQuery('body').append('<div>' + 'currentToken: ' + currentToken + '</div>');
 						
 						// 使用realtime database紀錄
 						// return currentToken;
