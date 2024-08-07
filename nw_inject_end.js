@@ -26,15 +26,43 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 
 	requirejs(["tw.ace33022.util.browser.CommonForm", "js-logger"], function(CommonForm, Logger) {
 
+		function showNotification(title, option) {
+		
+			navigator.serviceWorker.getRegistration(location.origin + location.pathname + 'service_worker')
+			.then(function(registration) {
+			
+				registration.showNotification(title, option);
+			})
+			.catch(function(error) {
+			
+				console.log('getRegistration() occur with error: ', error);
+				
+				jQuery('body').append('<div>getRegistration() occur with error: ' + error + '</div>');
+			});
+		}
+		
+		function initializeFirebase() {
+		
+			firebase.initializeApp({
+
+				apiKey: "AIzaSyDNEP4yz90DYPc7r4pqO6d-ANir499inro",
+				authDomain: "stock-alarm-dc6af.firebaseapp.com",
+				/* databaseURL: "https://stock-alarm.firebaseio.com", */
+				databaseURL: "https://stock-alarm-dc6af-default-rtdb.asia-southeast1.firebasedatabase.app/",
+				projectId: "stock-alarm-dc6af",
+				storageBucket: "stock-alarm-dc6af.appspot.com",
+				messagingSenderId: "35503173635",
+				appId: "1:35503173635:web:c0f82ee0d9c11485f21e36",
+				measurementId: "G-17ZP4QJE62"
+			});
+		}
+		
 		var txtContentId = 'txtContent' + Math.random().toString(36).substr(2, 6);
-		var btnQueryId = 'btnQuery' + Math.random().toString(36).substr(2, 6);
 		var btnTestNotificationId = 'btnTestNotification' + Math.random().toString(36).substr(2, 6);
 
 		var tag;
 
 		// var audio = new Audio('http://commondatastorage.googleapis.com/codeskulptor-assets/jump.ogg');
-		
-		var notification = null;
 		
 		jQuery(window).on('focus', function(event) {
 
@@ -44,10 +72,9 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 		tag = '<div class="container-fluid" style="padding-top: 5px;">'
 				+ '  <div class="row">'
 				+ '    <div class="col-md-offset-3 col-md-6">'
-				+ '      <div class="input-group">'
-				+ '        <input type="text" id="' + txtContentId + '" class="form-control" tabindex="0" placeholder="條碼" />'
-				+ '        <span class="input-group-btn"><input type="button" id="' + btnQueryId + '" class="btn btn-primary" tabindex="0" value="查詢" /></span>'
-				+ '      </div>'
+				// + '      <div class="input-group">'
+				// + '        <input type="text" id="' + txtContentId + '" class="form-control" tabindex="0" placeholder="條碼" />'
+				// + '      </div>'
 				+ '    </div>'
 				+ '  </div>'
 				+ '</div>';
@@ -58,7 +85,7 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 				+ '</div>';
 		jQuery('body').append(tag);
 		
-		jQuery('#' + txtContentId).on('focus', function(event) {jQuery(this).select();});
+		// jQuery('#' + txtContentId).on('focus', function(event) {jQuery(this).select();});
 		
 		jQuery('#' + btnTestNotificationId).on('click', function(event) {
 		
@@ -78,120 +105,17 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 			});
 		});
 		
-		firebase.initializeApp({
-
-			apiKey: "AIzaSyDNEP4yz90DYPc7r4pqO6d-ANir499inro",
-			authDomain: "stock-alarm-dc6af.firebaseapp.com",
-			/* databaseURL: "https://stock-alarm.firebaseio.com", */
-			databaseURL: "https://stock-alarm-dc6af-default-rtdb.asia-southeast1.firebasedatabase.app/",
-			projectId: "stock-alarm-dc6af",
-			storageBucket: "stock-alarm-dc6af.appspot.com",
-			messagingSenderId: "35503173635",
-			appId: "1:35503173635:web:c0f82ee0d9c11485f21e36",
-			measurementId: "G-17ZP4QJE62"
-		});
-		
 		// audio.loop = true;
 		
 		jQuery('body').append('<div>' + 'window.Notification: ' + window.Notification + '</div>');
 		jQuery('body').append('<div>' + 'navigator.serviceWorker: ' + navigator.serviceWorker + '</div>');
 		
-		jQuery('body').append('<div>Check Notification</div>');
-		
-		if ('Notification' in window) {
-		
-			console.log('Notification permission: ', Notification.permission);
-			
-			jQuery('body').append('<div>' + 'Notification permission: ' + Notification.permission + '</div>');
-		
-			if (Notification.permission == 'granted') {
-			
-				jQuery('body').append('<div>Display Notification</div>');
-				
-				try {
-
-					notification = new Notification('Stock Alarm', {
-		
-						"body": "確認Notification是否顯示！",
-						"icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png"
-						/* "image": "https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png" */
-					});			
-				}
-				catch(e) {
-
-					console.log(e.message);
-					
-					jQuery('body').append('<div>' + e.message + '</div>');
-				}
-				finally {
-				
-				}
-			}
-			else {
-			
-				if (Notification.permission != 'denied') {
-				
-					Notification.requestPermission(function(permission) {
-					
-						console.log('Notification permission: ', permission);
-						
-						jQuery('body').append('<div>' + 'Notification permission: ' + Notification.permission + '</div>');
-						
-						if (permission == 'granted') {
-						
-							notification = new Notification('Stock Alarm', {
-				
-								"body": "確認Notification是否顯示！",
-								"icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png"
-								/* "image": "https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png" */
-							});			
-						}
-					});
-				}
-			}
-			
-			if (notification != null) {
-			
-				jQuery('body').append('<div>add Event to Notification</div>');
-			
-				notification.addEventListener("show", () => {
-				
-					console.log('notification show');
-					
-					// audio.play();
-				});
-				
-				notification.addEventListener("click", () => {
-				
-					console.log('notification click');
-					
-					notification.close();
-					
-					// display about message?
-					
-					// audio.pause();
-				});
-
-				notification.addEventListener("close", () => {
-				
-					console.log('notification close');
-					
-					// audio.pause();
-				});
-			}
-		}
-		else {
-
-			console.log('Notification not in Navigator.');
-			
-			jQuery('body').append('<div>' + 'Notification not in window.' + '</div>');
-		}
-		
-		jQuery('body').append('<div>Check serviceWorker</div>');
-		
+		// @memo 2024/08/07 ace 有serviceWorker物件時才進行程式。
 		if ('serviceWorker' in navigator) {
 		
-			// console.log(location.origin + location.pathname + 'service_worker.js');
+			console.log('location.origin: ' + location.origin);
+			console.log('location.pathname' + location.pathname);
+			console.log(location.origin + location.pathname + 'service_worker.js');
 			
 			jQuery('body').append('<div>location.origin: ' + location.origin + '</div>');
 			jQuery('body').append('<div>location.pathname: ' + location.pathname + '</div>');
@@ -206,6 +130,58 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 				
 				// console.log('registration: ' + registration);
 				
+				if ('Notification' in window) {
+				
+					console.log('Notification permission: ', Notification.permission);
+					
+					jQuery('body').append('<div>' + 'Notification permission: ' + Notification.permission + '</div>');
+					
+					if (Notification.permission == 'granted') {
+					
+						showNotification('Stock Alarm', {
+			
+							"body": "確認Notification是否顯示！",
+							"icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png"
+							/* "image": "https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png" */
+						});			
+					}
+					else {
+					
+						Notification.requestPermission(function(permission) {
+						
+							console.log('Notification permission: ', permission);
+							
+							jQuery('body').append('<div>' + 'Notification permission: ' + Notification.permission + '</div>');
+							
+							showNotification('Stock Alarm', {
+				
+								"body": "確認Notification是否顯示！",
+								"icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png"
+								/* "image": "https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png" */
+							});			
+						});
+					}
+				}
+				else {
+
+					console.log('Notification not in Navigator.');
+					
+					jQuery('body').append('<div>' + 'Notification not in window.' + '</div>');
+				}
+					
+				firebase.initializeApp({
+
+					apiKey: "AIzaSyDNEP4yz90DYPc7r4pqO6d-ANir499inro",
+					authDomain: "stock-alarm-dc6af.firebaseapp.com",
+					/* databaseURL: "https://stock-alarm.firebaseio.com", */
+					databaseURL: "https://stock-alarm-dc6af-default-rtdb.asia-southeast1.firebasedatabase.app/",
+					projectId: "stock-alarm-dc6af",
+					storageBucket: "stock-alarm-dc6af.appspot.com",
+					messagingSenderId: "35503173635",
+					appId: "1:35503173635:web:c0f82ee0d9c11485f21e36",
+					measurementId: "G-17ZP4QJE62"
+				});
+			
 				firebase.messaging().getToken({
 				
 					"vapidKey": "BB29FY8R7vgk3HA5yRlE-yzQzMowlT7dnEkYEwq9QArjLUXZ2dPzXDtXt2L6DQIVTn3HaLHXMPZh6ztdA7sgtNM",
@@ -220,7 +196,35 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 						
 						jQuery('body').append('<div>' + 'currentToken: ' + currentToken + '</div>');
 						
+						firebase.messaging().onMessage(payload => {
+						
+							console.log('onMessage received.');
+							
+							jQuery('body').append('<div>' + 'onMessage received.' + '</div>');
+							
+							console.log('payload: ', payload);
+							console.log('payload["notification"]: ', payload["notification"]);
+							
+							if (!payload["notification"]) {
+							
+								if (payload["data"]["title"]) title = payload["data"]["title"];
+								if (payload["data"]["body"]) body = payload["data"]["body"];
+								
+								console.log('title: ' + title);
+								console.log('body: ' + body);
+								
+								if ((title != null) && (body != null)) {
+								
+									showNotification(title, {
+									
+										"body": body
+									});
+								}
+							}
+						});
+						
 						// 使用realtime database紀錄
+						
 						// return currentToken;
 					} 
 					else {
@@ -238,7 +242,6 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 					jQuery('body').append('<div>An error occurred while retrieving token.</div>');
 					jQuery('body').append('<div>' + error + '</div>');
 				});
-				
 			})
 			.catch(function(error) {
 			
@@ -254,92 +257,5 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 			
 			jQuery('body').append('<div>Navigator don\'t have serviceWorker.</div>');
 		}
-		
-		firebase.messaging().onMessage(payload => {
-		
-			// @memo 2024/05/03 ace 接收到的訊息即使有notification屬性，也不會預設以Notification顯示，可自行處理收到的訊息。
-		
-			console.log('onMessage received.', payload);
-			
-			jQuery('body').append('<div>' + 'onMessage received.' + '</div>');
-			
-			/* "icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png", */
-			/* "image": "https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png", */
-			/*
-			navigator.serviceWorker.getRegistration(location.origin + location.pathname + 'service_worker').then(function(registration) {
-			
-				registration.showNotification(payload["notification"]["title"], {
-				
-					"body": payload["notification"]["body"]
-				});
-			});
-			*/
-		});
-		
-		/*
-		firebase.database().ref('/point').once('value', function(snapshot) {
-		
-			console.log('Once Value');
-			// console.log(snapshot.key());
-			console.log(snapshot.key);
-			console.log(snapshot.val());
-			// the console.log will return NULL, database is empty
-		});
-		*/
-		
-		/*
-		firebase.database().ref('/alert/20240423').on('child_added', function(snapshot, prevChildKey) {
-		
-			var tag = '';
-		
-			// child_added會先將原有資料讀入乙次！如何不讀入舊有資料？
-			// 增加判斷時間的條件？
-			console.log('child added');
-			// console.log(snapshot.key);
-			console.log(snapshot.val());
-			
-			tag = '<div>' + snapshot.val() + '</div>';
-			jQuery('body').append(tag);
-			
-			// createNotification('TX', snapshot.val(), 'https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png');
-			
-			var audio = new Audio('http://commondatastorage.googleapis.com/codeskulptor-assets/jump.ogg');
-			
-			var notification = null;
-			
-			audio.loop = true;
-			
-			notification = new Notification('Stock Alarm', {
-			
-				"body": snapshot.val(),
-				"icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png"
-			});			
-			
-			notification.addEventListener("show", () => {
-			
-				console.log('notification show');
-				
-				// audio.play();
-			});
-			
-			notification.addEventListener("click", () => {
-			
-				console.log('notification click');
-				
-				notification.close();
-				
-				// display about message?
-				
-				// audio.pause();
-			});
-
-			notification.addEventListener("close", () => {
-			
-				console.log('notification close');
-				
-				// audio.pause();
-			});
-		});
-		*/
 	});
 });

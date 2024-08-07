@@ -54,26 +54,32 @@ firebase.messaging().onBackgroundMessage(payload => {
 	var title = null;
 	var body = null;
 	
-	console.log('BackgroundMessage.', payload);
+	console.log('BackgroundMessage');
+	
+	console.log('payload: ', payload);
+	console.log('payload["notification"]: ', payload["notification"]);
 	
 	if (!payload["notification"]) {
 	
 		if (payload["data"]["title"]) title = payload["data"]["title"];
-		if (payload["data"]["body"]) title = payload["data"]["body"];
+		if (payload["data"]["body"]) body = payload["data"]["body"];
+		
+		console.log('title: ' + title);
+		console.log('body: ' + body);
 		
 		if ((title != null) && (body != null)) {
 		
-			self.registration.showNotification(payload["notification"]["title"], {
+			self.registration.showNotification(title, {
 			
 				/* "icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png", */
 				/* "image": "https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png", */
-				"body": payload["notification"]["body"]
+				"body": body
 			});
 		}
 	}
 });
 
-// @memo 2024/05/03 ace Push API，當傳送資料時會呼叫此listener。
+// @memo 2024/05/03 ace Push API，當傳送/接收資料時會呼叫此listener。
 self.addEventListener('push', function(event) {
 
 	console.log('serviceWorker push.');
