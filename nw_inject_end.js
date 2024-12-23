@@ -114,14 +114,14 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 		if ('serviceWorker' in navigator) {
 		
 			console.log('location.origin: ' + location.origin);
-			console.log('location.pathname' + location.pathname);
-			console.log(location.origin + location.pathname + 'service_worker.js');
+			console.log('location.pathname: ' + location.pathname);
+			console.log(location.origin + location.pathname + '/service_worker.js');
 			
 			jQuery('body').append('<div>location.origin: ' + location.origin + '</div>');
 			jQuery('body').append('<div>location.pathname: ' + location.pathname + '</div>');
 			jQuery('body').append('<div>service_worker: ' + location.origin + location.pathname + 'service_worker.js' + '</div>');
 			
-			navigator.serviceWorker.register(location.origin + location.pathname + 'service_worker.js')
+			navigator.serviceWorker.register(location.origin + location.pathname + '/service_worker.js')
 			.then(function(registration) {
 			
 				console.log('Register serviceWorker complete.');
