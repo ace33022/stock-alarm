@@ -113,143 +113,154 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 		// @memo 2024/08/07 ace 有serviceWorker物件時才進行程式。
 		if ('serviceWorker' in navigator) {
 		
+			console.log('location.protocol: ' + location.protocol);
 			console.log('location.origin: ' + location.origin);
-			console.log('location.pathname: ' + location.pathname);
-			console.log(location.origin + location.pathname + '/service_worker.js');
+			console.log('location.pathname: ' + location.pathname);	//  /W:/program/GIT00070/index.html
+			console.log(location.origin + location.pathname + '/service_worker.js');	// file:///W:/program/GIT00070/index.htmlservice_worker.js
 			
+			jQuery('body').append('<div>location.protocol: ' + location.protocol + '</div>');
 			jQuery('body').append('<div>location.origin: ' + location.origin + '</div>');
 			jQuery('body').append('<div>location.pathname: ' + location.pathname + '</div>');
 			jQuery('body').append('<div>service_worker: ' + location.origin + location.pathname + 'service_worker.js' + '</div>');
 			
-			navigator.serviceWorker.register(location.origin + location.pathname + '/service_worker.js')
-			.then(function(registration) {
+			if (location.origin.startsWith('https')) {
 			
-				console.log('Register serviceWorker complete.');
+				navigator.serviceWorker.register(location.origin + location.pathname + '/service_worker.js')
+				.then(function(registration) {
 				
-				jQuery('body').append('<div>' + 'Register serviceWorker complete.' + '</div>');
-				
-				// console.log('registration: ' + registration);
-				
-				if ('Notification' in window) {
-				
-					console.log('Notification permission: ', Notification.permission);
+					console.log('Register serviceWorker complete.');
 					
-					jQuery('body').append('<div>' + 'Notification permission: ' + Notification.permission + '</div>');
+					jQuery('body').append('<div>' + 'Register serviceWorker complete.' + '</div>');
 					
-					if (Notification.permission == 'granted') {
+					// console.log('registration: ' + registration);
 					
-						showNotification('Stock Alarm', {
-			
-							"body": "確認Notification是否顯示！",
-							"icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png"
-							/* "image": "https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png" */
-						});			
-					}
-					else {
+					if ('Notification' in window) {
 					
-						Notification.requestPermission(function(permission) {
+						console.log('Notification permission: ', Notification.permission);
 						
-							console.log('Notification permission: ', permission);
-							
-							jQuery('body').append('<div>' + 'Notification permission: ' + Notification.permission + '</div>');
-							
+						jQuery('body').append('<div>' + 'Notification permission: ' + Notification.permission + '</div>');
+						
+						if (Notification.permission == 'granted') {
+						
 							showNotification('Stock Alarm', {
 				
 								"body": "確認Notification是否顯示！",
 								"icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png"
 								/* "image": "https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png" */
 							});			
-						});
+						}
+						else {
+						
+							Notification.requestPermission(function(permission) {
+							
+								console.log('Notification permission: ', permission);
+								
+								jQuery('body').append('<div>' + 'Notification permission: ' + Notification.permission + '</div>');
+								
+								showNotification('Stock Alarm', {
+					
+									"body": "確認Notification是否顯示！",
+									"icon": "https://www.studytonight.com/css/resource.v2/icons/studytonight/st-icon-dark.png"
+									/* "image": "https://augt-forum-upload.s3-ap-southeast-1.amazonaws.com/original/1X/6b3cd55281b7bedea101dc36a6ef24034806390b.png" */
+								});			
+							});
+						}
 					}
-				}
-				else {
-
-					console.log('Notification not in Navigator.');
-					
-					jQuery('body').append('<div>' + 'Notification not in window.' + '</div>');
-				}
-					
-				firebase.initializeApp({
-
-					apiKey: "AIzaSyDNEP4yz90DYPc7r4pqO6d-ANir499inro",
-					authDomain: "stock-alarm-dc6af.firebaseapp.com",
-					/* databaseURL: "https://stock-alarm.firebaseio.com", */
-					databaseURL: "https://stock-alarm-dc6af-default-rtdb.asia-southeast1.firebasedatabase.app/",
-					projectId: "stock-alarm-dc6af",
-					storageBucket: "stock-alarm-dc6af.appspot.com",
-					messagingSenderId: "35503173635",
-					appId: "1:35503173635:web:c0f82ee0d9c11485f21e36",
-					measurementId: "G-17ZP4QJE62"
-				});
-			
-				firebase.messaging().getToken({
-				
-					"vapidKey": "BB29FY8R7vgk3HA5yRlE-yzQzMowlT7dnEkYEwq9QArjLUXZ2dPzXDtXt2L6DQIVTn3HaLHXMPZh6ztdA7sgtNM",
-					"serviceWorkerRegistration": registration
-				})
-				.then((currentToken) => {
-				
-					if (currentToken) {
-					
-						// Send the token to your server and update the UI if necessary
-						console.log('currentToken: ' + currentToken);
-						
-						jQuery('body').append('<div>' + 'currentToken: ' + currentToken + '</div>');
-						
-						firebase.messaging().onMessage(payload => {
-						
-							console.log('onMessage received.');
-							
-							jQuery('body').append('<div>' + 'onMessage received.' + '</div>');
-							
-							console.log('payload: ', payload);
-							console.log('payload["notification"]: ', payload["notification"]);
-							
-							if (!payload["notification"]) {
-							
-								if (payload["data"]["title"]) title = payload["data"]["title"];
-								if (payload["data"]["body"]) body = payload["data"]["body"];
-								
-								console.log('title: ' + title);
-								console.log('body: ' + body);
-								
-								if ((title != null) && (body != null)) {
-								
-									showNotification(title, {
-									
-										"body": body
-									});
-								}
-							}
-						});
-						
-						// 使用realtime database紀錄
-						
-						// return currentToken;
-					} 
 					else {
-					
-						// Show permission request UI
-						console.log('No registration token available. Request permission to generate one.');
+
+						console.log('Notification not in Navigator.');
 						
-						jQuery('body').append('<div>No registration token available. Request permission to generate one.</div>');
+						jQuery('body').append('<div>' + 'Notification not in window.' + '</div>');
 					}
-				})
-				.catch((error) => {
+						
+					firebase.initializeApp({
+
+						apiKey: "AIzaSyDNEP4yz90DYPc7r4pqO6d-ANir499inro",
+						authDomain: "stock-alarm-dc6af.firebaseapp.com",
+						/* databaseURL: "https://stock-alarm.firebaseio.com", */
+						databaseURL: "https://stock-alarm-dc6af-default-rtdb.asia-southeast1.firebasedatabase.app/",
+						projectId: "stock-alarm-dc6af",
+						storageBucket: "stock-alarm-dc6af.appspot.com",
+						messagingSenderId: "35503173635",
+						appId: "1:35503173635:web:c0f82ee0d9c11485f21e36",
+						measurementId: "G-17ZP4QJE62"
+					});
 				
-					console.log('An error occurred while retrieving token. ', error);
+					firebase.messaging().getToken({
 					
-					jQuery('body').append('<div>An error occurred while retrieving token.</div>');
+						"vapidKey": "BB29FY8R7vgk3HA5yRlE-yzQzMowlT7dnEkYEwq9QArjLUXZ2dPzXDtXt2L6DQIVTn3HaLHXMPZh6ztdA7sgtNM",
+						"serviceWorkerRegistration": registration
+					})
+					.then((currentToken) => {
+					
+						if (currentToken) {
+						
+							// Send the token to your server and update the UI if necessary
+							console.log('currentToken: ' + currentToken);
+							
+							jQuery('body').append('<div>' + 'currentToken: ' + currentToken + '</div>');
+							
+							firebase.messaging().onMessage(payload => {
+							
+								console.log('onMessage received.');
+								
+								jQuery('body').append('<div>' + 'onMessage received.' + '</div>');
+								
+								console.log('payload: ', payload);
+								console.log('payload["notification"]: ', payload["notification"]);
+								
+								if (!payload["notification"]) {
+								
+									if (payload["data"]["title"]) title = payload["data"]["title"];
+									if (payload["data"]["body"]) body = payload["data"]["body"];
+									
+									console.log('title: ' + title);
+									console.log('body: ' + body);
+									
+									if ((title != null) && (body != null)) {
+									
+										showNotification(title, {
+										
+											"body": body
+										});
+									}
+								}
+							});
+							
+							// 使用realtime database紀錄
+							
+							// return currentToken;
+						} 
+						else {
+						
+							// Show permission request UI
+							console.log('No registration token available. Request permission to generate one.');
+							
+							jQuery('body').append('<div>No registration token available. Request permission to generate one.</div>');
+						}
+					})
+					.catch((error) => {
+					
+						console.log('An error occurred while retrieving token. ', error);
+						
+						jQuery('body').append('<div>An error occurred while retrieving token.</div>');
+						jQuery('body').append('<div>' + error + '</div>');
+					});
+				})
+				.catch(function(error) {
+				
+					console.log('Register serviceWorker occur with error. ', error);
+					
+					jQuery('body').append('<div>Register serviceWorker occur with error.</div>');
 					jQuery('body').append('<div>' + error + '</div>');
 				});
-			})
-			.catch(function(error) {
+			}
+			else {
 			
-				console.log('Register serviceWorker occur with error. ', error);
+				console.log('Just run in https environment.');
 				
-				jQuery('body').append('<div>Register serviceWorker occur with error.</div>');
-				jQuery('body').append('<div>' + error + '</div>');
-			});
+				jQuery('body').append('<div>Just run in https environment.</div>');
+			}
 		}
 		else {
 		

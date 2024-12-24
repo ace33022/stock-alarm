@@ -83,13 +83,13 @@
 			if (location.protocol == 'file:') {
 
 				// base.setAttribute('href', 'W:/tool/package/LangEnv/java/apache-tomcat/webapps/ROOT/WEB-INF/htdoc/');
-				base.setAttribute('href', 'W:/htdoc/');
+				base.setAttribute('href', 'L:/htdoc/');
 			}
 			else if (location.origin.startsWith('http')) {
 
-				console.log('location.origin: ' + location.origin);
-				console.log('location.origin indexOf(\'127.0.0.1\'): ' + location.origin.indexOf('127.0.0.1'));
-				console.log('location.origin indexOf(\'localhost\'): ' + location.origin.indexOf('localhost'));
+				// console.log('location.origin: ' + location.origin);
+				// console.log('location.origin indexOf(\'127.0.0.1\'): ' + location.origin.indexOf('127.0.0.1'));
+				// console.log('location.origin indexOf(\'localhost\'): ' + location.origin.indexOf('localhost'));
 				if ((location.origin.indexOf('127.0.0.1') === -1) && (location.origin.indexOf('localhost') === -1)) {
 			
 					base.setAttribute('href', 'https://ace33022.github.io/htdoc/');
