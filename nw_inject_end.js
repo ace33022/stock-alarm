@@ -28,7 +28,7 @@ Configuration.loadJS(Configuration.requirejsFile, function() {
 
 		function showNotification(title, option) {
 		
-			navigator.serviceWorker.getRegistration(location.origin + location.pathname + 'service_worker')
+			navigator.serviceWorker.getRegistration(location.origin + location.pathname + '/service_worker')
 			.then(function(registration) {
 			
 				registration.showNotification(title, option);
